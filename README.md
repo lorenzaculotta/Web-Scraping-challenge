@@ -8,7 +8,7 @@ SCRIPTS
 - app.py: flask application
 
 SCREENSHOTS FOLDER
-screenshots of flask app
+screenshots of flask app and website
 
 TEMPLATES FOLDER
 - index.html: template for rendering
