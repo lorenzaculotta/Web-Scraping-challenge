@@ -6,29 +6,34 @@ from splinter import Browser
 
 def scrape():
     ## 1) NASA Mars News
-    ##Web scraping with BeautifulSoup
+    ##Web scraping with Splinter and bs
+    executable_path = {'executable_path': 'chromedriver.exe'}
+    browser = Browser('chrome', **executable_path, headless=False)
 
     # URL of page to be scraped
-    url="https://mars.nasa.gov/news/?page=0&per_page=40&order=publish_date+desc%2Ccreated_at+desc&search=&category=19%2C165%2C184%2C204&blank_scope=Latest"
+    url = "https://mars.nasa.gov/news/?page=0&per_page=40&order=publish_date+desc%2Ccreated_at+desc&search=&category=19%2C165%2C184%2C204&blank_scope=Latest"
+    browser.visit(url)
 
-    # Retrieve page with the requests module
-    response = requests.get(url)
+    # HTML object
+    html = browser.html
 
-    # Create BeautifulSoup object
-    soup = bs(response.text, 'html.parser')
+    # Parse HTML with Beautiful Soup
+    soup = bs(html, 'html.parser')
+    print(soup.prettify())
 
-    # Examine the results, then determine element that contains sought info
-    # print(soup.prettify())
+    # find first result = latest news
+    results = soup.find_all("li", class_="slide")
+    results
 
-    # results are returned as an iterable list
-    results = soup.find_all("div", class_="slide")
-    # results
-
+    #store news title and paragraph
     news_title = results[0].find("div", class_="content_title").text
     news_p= results[0].find("div", class_="rollover_description_inner").text
     if (news_title and news_p ):
         print(news_title)
         print(news_p)
+    
+    #exit browser
+    browser.quit()
 
     #------------------------------------------------------------------------
     ## 2) JPL Mars Space Images - Featured Image
