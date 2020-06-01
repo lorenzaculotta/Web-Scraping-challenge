@@ -5,7 +5,7 @@ import requests
 from splinter import Browser
 
 def scrape():
-    ## NASA Mars News
+    ## 1) NASA Mars News
     ##Web scraping with BeautifulSoup
 
     # URL of page to be scraped
@@ -30,7 +30,8 @@ def scrape():
         print(news_title)
         print(news_p)
 
-    ## JPL Mars Space Images - Featured Image
+    #------------------------------------------------------------------------
+    ## 2) JPL Mars Space Images - Featured Image
     ##Web scraping with Splinter and bs
     executable_path = {'executable_path': 'chromedriver.exe'}
     browser = Browser('chrome', **executable_path, headless=False)
@@ -52,7 +53,10 @@ def scrape():
     featured_image_url= f'https://www.jpl.nasa.gov{featured_image.a["data-fancybox-href"]}'
     # featured_image_url
 
-    ## Mars Facts
+    browser.quit()
+
+    #-----------------------------------------------------------------------------------------------
+    ## 3) Mars Facts
     ##Web scraping with Pandas
     url= "https://space-facts.com/mars/"
     table=pd.read_html(url)
@@ -61,8 +65,9 @@ def scrape():
     mars_df=table[0]
     mars_df
 
-    #set index to columns[0]
+    #set index to columns[0] and rename axes
     mars_df=mars_df.set_index(mars_df.columns[0])
+    mars_df=mars_df.rename(columns={1: "value"}).rename_axis("description", axis=0)
     mars_df
 
     #convert the data to a HTML table string
@@ -70,7 +75,8 @@ def scrape():
     mars_html=mars_html.replace('\n', "")
     mars_html
 
-    ## Mars Hemispheres
+    #------------------------------------------------------------------------------------
+    ## 4) Mars Hemispheres
     ##Web scraping with Splinter and bs
     executable_path = {'executable_path': 'chromedriver.exe'}
     browser = Browser('chrome', **executable_path, headless=False)
